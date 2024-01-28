@@ -1,0 +1,182 @@
+body {
+  background-image: url("clash_bg.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat;
+  background-color: rgb(21, 112, 155);
+  font-family: Arial, sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: white;
+  text-shadow: 5px 5px 5px black;
+  overflow-y: auto;
+}
+
+/* Add this to your existing CSS */
+#deck {
+  background-color: #333; /* Dark grayish-black color */
+  padding: 10px; /* Add some padding for better visibility */
+  border-radius: 8px; /* Optional: Add rounded corners */
+  width: 90%;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px; /* Adjust the gap between cards as needed */
+}
+
+.card-image {
+  width: 100%; /* Make each card image fill the grid cell */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px; /* Optional: Add rounded corners to each card */
+}
+.container {
+  text-align: center;
+  overflow-y: auto;
+}
+
+/* Styles for the card container */
+.deck-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px; /* Adjust the gap between cards as needed */
+  justify-content: center;
+  max-width: 400px; /* Adjust the max-width as needed */
+  margin: auto;
+  text-align: center; /* Center the cards */
+}
+
+.card-image {
+  width: 80px;
+  margin: 5px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+input {
+  margin-right: 10px;
+}
+
+button {
+  cursor: pointer;
+  margin-top: 10px; /* Add margin-top for some space */
+}
+
+#playerInfo {
+  margin-top: 20px;
+}
+
+#playerName {
+  margin-bottom: 10px;
+}
+
+#clanMembersDropdown {
+  margin-top: 10px; /* Add margin-top for some space */
+}
+@font-face {
+  font-family: "SupercellMagic";
+  src: url("Supercell-Magic\ Regular.ttf") format("truetype"); /* Adjust the filename as needed */
+}
+
+body {
+  font-family: "SupercellMagic", sans-serif; /* Use a fallback font (e.g., sans-serif) for compatibility */
+}
+
+h1,
+h2,
+p {
+  font-family: "SupercellMagic", sans-serif;
+  /* Apply the font to specific elements as needed */
+}
+
+.result-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Distribute space between items */
+  max-width: 600px; /* Adjust the max-width as needed */
+  margin: auto; /* Center the container */
+}
+
+.result-container p {
+  width: 48%; /* Adjust the width to leave space between columns */
+  box-sizing: border-box;
+  margin: 5px; /* Adjust the margin to reduce spacing */
+  padding: 10px; /* Adjust the padding to reduce spacing */
+}
+
+/* Apply styles to text input fields */
+input[type="text"] {
+  font-family:"SupercellMagic", sans-serif;
+  padding: 10px; /* Adjust padding as needed */
+  border: 1px solid #ccc; /* Border color */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5),
+  0 0 5px 5px rgba(0, 0, 0, 0.8),
+  0 4px 5px rgba(0, 0, 0, 0.1); /* Inner shadow */
+  outline: none; /* Remove default focus outline */
+  height: 8px;
+}
+
+/* Apply styles to other types of input fields if needed */
+input[type="password"],
+input[type="email"] {
+  /* Add styles for other input types as needed */
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px; /* Add margin between input elements */
+}
+
+.input-container label,
+.input-container input {
+  width: 400px;
+  text-align: center;
+  display: block; /* Make label and input elements block-level */
+  margin-bottom: 5px; 
+  /* Add margin between label and input */
+}
+
+.input-container button {
+  margin-top: 10px; /* Add margin between input elements */
+}
+
+/* Apply styles to the button */
+button {
+  border-radius: 10px; /* Add border-radius for a rounder appearance */ /* Adjust padding to make it smaller */
+  font-family: "SupercellMagic", sans-serif; /* Change the font */
+  font-size: 14px; /* Adjust the font size */
+  color: white;
+  background-color: rgb(21, 112, 155);
+  text-shadow: 5px 5px 5px black;
+  /* Other relevant styles */
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}

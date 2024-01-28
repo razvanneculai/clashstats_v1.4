@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clash Royale Statistics for players</title>
+  <link rel="stylesheet" href="styles.css">
+ 
+</head>
+<body>
+  <div class="container">
+    <h1 class ="fade-in">Clash Royale Player Information</h1>
+
+    <div class="input-container">
+      <label for="playerTagInput">Enter Player Tag:</label>
+      <input type="text" id="playerTagInput" placeholder="e.g., #ABC123">
+      <button onclick="fetchPlayerInfo()">Find player Statistics</button>
+    </div>
+    
+
+    <h2>Player Information</h2>
+    <div id="result" class="result-container">
+      
+      <p id="playerName"></p>
+      <p id="trophies"></p>
+      <p id="arena"></p>
+      <p id="expLevel"></p>
+      <p id="wins"></p>
+      <p id="battle"></p>
+      
+    </div>
+    <h2>Player Deck</h2>
+      <table id="deck" class="deck-container"></table>
+  </div>
+
+  <script>
+    async function fetchPlayerInfo() {
+      const playerTag = document.getElementById('playerTagInput').value;
+  
+      try {
+        const response = await fetch('/getPlayerInfo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ playerTag: playerTag }),
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+  
+          // Update player information
+          document.getElementById('playerName').innerText = `Player Name: ${data.playerName}`;
+          document.getElementById('trophies').innerText = `Trophies: ${data.trophies}`;
+          document.getElementById('arena').innerText = `Arena: ${data.arena}`;
+          document.getElementById('expLevel').innerText = `Level: ${data.expLevel}`;
+          document.getElementById('wins').innerText = `Wins: ${data.wins}`;
+          document.getElementById('battle').innerText = `No. of Battles: ${data.battle}`;
+          // Display player deck as a table
+          const deckTable = document.getElementById('deck');
+          deckTable.innerHTML = ''; // Clear existing content
+          const deckRows = Math.ceil(data.playerDeck.length / 4);
+
+          for (let i = 0; i < deckRows; i++) {
+            const row = deckTable.insertRow();
+            for (let j = 0; j < 4; j++) {
+              const index = i * 4 + j;
+              if (index < data.playerDeck.length) {
+                const cell = row.insertCell();
+                const card = data.playerDeck[index];
+                const cardImage = document.createElement('img');
+                cardImage.src = `${card.name}.png`;  // Update the path accordingly
+                cardImage.alt = card.name;
+                cardImage.title = `${card.name} (Level ${card.level}/${card.maxLevel})`;
+                cardImage.classList.add('card-image');
+                cell.appendChild(cardImage);
+              }
+            }
+          }
+        } else {
+          const errorData = await response.json();
+          document.getElementById('result').innerText = `Error: ${errorData.error}`;
+        }
+      } catch (error) {
+        console.error('Error fetching player information:', error);
+        document.getElementById('result').innerText = 'Error fetching player information. Check the console for details.';
+      }
+    }
+  </script>
+  <a href="clan.html">Clan Participation</a>
+  <a href="more.html">More options</a>
+  <a href="chests.html">See your nex chests</a>
+</body>
+</html>

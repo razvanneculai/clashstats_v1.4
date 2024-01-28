@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clash Royale Clan Information</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Clash Royale Clan Information</h1>
+
+  <label for="clanTagInput">Enter Clan Tag:</label>
+  <input type="text" id="clanTagInput" placeholder="e.g., #ABC123">
+
+  <button onclick="fetchClanInfo()">Fetch Clan Information</button>
+
+  <div id="clanResult">
+    <h2>Clan Information</h2>
+    <p id="clanName"></p>
+    
+    <h2>Clan Members</h2>
+    <select id="clanMembersDropdown" onchange="fetchPlayerInfo()">
+      <!-- Members will be dynamically added here -->
+    </select>
+
+    <div id="playerInfo">
+      <!-- Player information will be displayed here -->
+    </div>
+  </div>
+
+  <script>
+    async function fetchClanInfo() {
+      const clanTag = document.getElementById('clanTagInput').value;
+  
+      try {
+        const response = await fetch('/getClanInfo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ clanTag: clanTag }),
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+  
+          // Update clan name
+          document.getElementById('clanName').innerText = `Clan Name: ${data.clanName}`;
+  
+          // Populate clan members dropdown
+          const dropdown = document.getElementById('clanMembersDropdown');
+          dropdown.innerHTML = '<option value="">Select a member</option>';
+          data.clanMembers.forEach(member => {
+            const option = document.createElement('option');
+            option.value = member.tag;
+            option.innerText = member.name;
+            dropdown.appendChild(option);
+          });
+        } else {
+          const errorData = await response.json();
+          document.getElementById('clanResult').innerText = `Error: ${errorData.error}`;
+        }
+      } catch (error) {
+        console.error('Error fetching clan information:', error);
+        document.getElementById('clanResult').innerText = 'Error fetching clan information. Check the console for details.';
+      }
+    }
+
+    async function fetchPlayerInfo() {
+      const selectedTag = document.getElementById('clanMembersDropdown').value;
+  
+      try {
+        const response = await fetch('/getPlayerInfo', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ playerTag: selectedTag }),
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+  
+          // Display player information
+          const playerInfoContainer = document.getElementById('playerInfo');
+          playerInfoContainer.innerHTML = `
+            <h3>Player Information</h3>
+            <p>Player Name: ${data.playerName}</p>
+            <p>Trophies: ${data.trophies}</p>
+            <h3>Player Deck</h3>
+            <div class="card-container">
+                ${data.playerDeck.map(card => `
+                <img src="${card.name}.png" alt="${card.name}" title="${card.name} (Level ${card.level}/${card.maxLevel})" class="card-image">
+              `).join('')}
+            </div>
+          `;
+        } else {
+          const errorData = await response.json();
+          document.getElementById('playerInfo').innerText = `Error: ${errorData.error}`;
+        }
+      } catch (error) {
+        console.error('Error fetching player information:', error);
+        document.getElementById('playerInfo').innerText = 'Error fetching player information. Check the console for details.';
+      }
+    }
+  </script>
+  <a href="index.html">Back to the home page</a>
+</body>
+</html>

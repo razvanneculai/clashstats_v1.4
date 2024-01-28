@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clash Royale Upcoming Chests</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .result-container img {
+      width: 3em; /* Set the width to the size of one "em" unit */
+      height: 3em; /* Set the height to the size of one "em" unit */
+      margin-right: 5px; /* Optional: Add some spacing between the image and text */
+    }
+    body {
+  overflow: hidden; /* Disable vertical scrolling for the entire body */
+}
+
+.container {
+  overflow-y: auto; /* Enable vertical scrolling for the container */
+  max-height: 100vh; /* Set the maximum height of the container, adjust as needed */
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Clash Royale Upcoming Chests</h1>
+
+    <label for="playerTagInput">Enter Player Tag:</label>
+    <input type="text" id="playerTagInput" placeholder="e.g., #ABC123">
+
+    <button onclick="fetchUpcomingChests()">Fetch Upcoming Chests</button>
+
+    <div id="result" class="result-container">
+      <h2>Upcoming Chests</h2>
+      <ul id="upcomingChests"></ul>
+    </div>
+  </div>
+
+  <script>
+    async function fetchUpcomingChests() {
+      const playerTag = document.getElementById('playerTagInput').value;
+
+      try {
+        const response = await fetch('/getPlayerUpcomingChests', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ playerTag: playerTag }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+
+          // Display upcoming chests
+          const upcomingChestsList = document.getElementById('upcomingChests');
+          upcomingChestsList.innerHTML = ''; // Clear existing content
+
+          data.upcomingChests.forEach(chest => {
+            const listItem = document.createElement('li');
+            const chestImage = document.createElement('img');
+
+            // Assuming chest names match the image filenames
+            chestImage.src = `${chest.name}.png`; // Update the path accordingly
+            chestImage.alt = chest.name;
+            chestImage.title = chest.name;
+
+            listItem.appendChild(chestImage);
+            listItem.appendChild(document.createTextNode(chest.name));
+            upcomingChestsList.appendChild(listItem);
+          });
+        } else {
+          const errorData = await response.json();
+          document.getElementById('result').innerText = `Error: ${errorData.error}`;
+        }
+      } catch (error) {
+        console.error('Error fetching upcoming chests:', error);
+        document.getElementById('result').innerText = 'Error fetching upcoming chests. Check the console for details.';
+      }
+    }
+  </script>
+  <a href="index.html">Back to the home page</a>
+</body>
+</html>
